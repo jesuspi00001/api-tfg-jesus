@@ -4,7 +4,7 @@ application = Flask(__name__)
 
 @application.route('/',methods=['GET','POST'])
 def index():
-    return "Flask application va bien."
+    return "Hola mundo."
 
 if __name__=="__main__":
     application.run()
