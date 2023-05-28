@@ -1,27 +1,55 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import requests
 
 application = Flask(__name__)
 
 @application.route('/')
 def index():
-    title = 'Inicio'
-    image_url = 'static/imagen.jpg'
-    description = '¿Qué vamos a encontrar aquí? Con esta aplicación podrás obtener datos de diferente índole sobre la liga de balocensto profesional americana, que aglutina los mejores jugadores del mundo.'
-    return render_template('index.html', title=title, image_url=image_url, description=description)
+    return render_template('index.html')
 
-@application.route('/busqueda')
-def busqueda():
-    title = 'Búsqueda de estadísticas de la NBA'
-    image_url = 'static/imagen.jpg'
-    description = 'Vista dónde pondremos las busquedas a la base de datos SportsDataBase API.'
-    return render_template('busqueda.html', title=title, image_url=image_url, description=description)
+@application.route('/jugador_puntos', methods=['GET', 'POST'])
+def jugador_puntos():
+    print(request.method)
+    
+    if request.method == 'POST':
+        jugador = request.form['jugador']
+        temporada = request.form['temporada']
+        resultado = buscar_jugador(jugador, temporada)
+        return render_template('jugador_puntos.html', resultado=resultado[0], flag=resultado[1])
+    
+    return render_template('jugador_puntos.html')
 
-@application.route('/quienes_somos')
-def quienes_somos():
-    title = '¿Quién soy?'
-    image_url = 'static/imagen.jpg'
-    description = 'Posible vista con una presentación mía. Soy Jesús Pereira Ibáñez, alumnos de Ingeniería Informática blablabla'
-    return render_template('quienes_somos.html', title=title, image_url=image_url, description=description)
+
+## Funcion busqueda de puntos x jugador en x temporada
+def buscar_jugador(jugador, temporada):
+    url_player = f"https://www.balldontlie.io/api/v1/players?search={jugador}"
+
+    player = requests.get(url_player)
+    points=-1
+
+    if player.status_code == 200 and jugador!="":
+        data_player = player.json()
+        if data_player['data']:
+            player_id = data_player['data'][0]['id']
+
+            url_puntos = f"https://www.balldontlie.io/api/v1/season_averages?player_ids[]={player_id}&season={temporada}"
+ 
+            puntos = requests.get(url_puntos)
+            
+            if puntos.status_code == 200:
+                data_puntos = puntos.json()
+                if data_puntos['data']:
+                    points = data_puntos['data'][0]['pts']
+
+        else:
+            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada entre 1946-actual.", False]
+    else:
+        return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada entre 1946-actual.", False]
+
+    if points == -1:
+        return [jugador + " no jugó durante la temporada introducida en la NBA. Introduce una temporada en la que " + jugador + " formara parte de la liga.", False]
+    else:
+        return ["El jugador " + jugador + " tiene una media de: " + str(points) + " puntos en la temporada del año " + temporada + ".", True]
 
 
 if __name__=="__main__":

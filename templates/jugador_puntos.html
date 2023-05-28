@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+</head>
+
+<body>
+    <div class="container-fluid bg-primary">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <a style="font-size: x-large" class="navbar-brand" href="#">
+                        <h2>BasketApp</h2>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a style="font-size: medium" class="nav-link active" aria-current="page"
+                                    href="{{ url_for('index') }}">Inicio</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a style="font-size: medium" class="nav-link active dropdown-toggle" href="#"
+                                    id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Búsquedas
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{ url_for('jugador_puntos') }}">Puntos por
+                                            temporada</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-5 col-8 col-md-4">
+        <form method="POST" action="{{ url_for('jugador_puntos') }}">
+            <div class="mb-3">
+                <label for="jugador" class="form-label">Nombre del jugador</label>
+                <input type="text" class="form-control" id="jugador" name="jugador">
+            </div>
+            <div class="mb-3">
+                <label for="temporada" class="form-label">Número de temporada (año)</label>
+                <input type="text" class="form-control" id="temporada" name="temporada">
+            </div>
+            <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Buscar
+            </button>
+        </form>
+
+    </div>
+
+    
+    {% if resultado %}
+    <div class="container-fluid mt-5 col-10 col-md-6">
+        <div class="card text-center">
+            {% if flag == False %}
+            <div class="card-header bg-danger text-white">
+            {% else %}
+            <div class="card-header bg-success text-white">
+            {% endif %}
+                <h4>Resultado de la búsqueda</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Puntos durante la temporada</h5>
+                <h6 class="card-text">{{ resultado }}</h6>
+                <!-- <a href="#" class="btn btn-primary">Descargar</a> -->
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+</body>
+
+</html>
