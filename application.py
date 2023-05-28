@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
-from requests import get
+import http.client
+import json
+import ssl
 
 application = Flask(__name__)
 
@@ -21,34 +23,52 @@ def jugador_puntos():
 
 ## Funcion busqueda de puntos x jugador en x temporada
 def buscar_jugador(jugador, temporada):
-    url_player = f"https://www.balldontlie.io/api/v1/players?search={jugador}"
+    total_points=-1
+    base_url = "www.balldontlie.io"
+    endpoint = "/api/v1/players"
 
-    player = get(url_player)
-    points=-1
+    context = ssl._create_unverified_context()
 
-    if player.status_code == 200 and jugador!="":
-        data_player = player.json()
-        if data_player['data']:
-            player_id = data_player['data'][0]['id']
+    conn = http.client.HTTPSConnection(base_url, context=context)
+    headers = {'Content-type': 'application/json'}
 
-            url_puntos = f"https://www.balldontlie.io/api/v1/season_averages?player_ids[]={player_id}&season={temporada}"
- 
-            puntos = get(url_puntos)
-            
-            if puntos.status_code == 200:
-                data_puntos = puntos.json()
-                if data_puntos['data']:
-                    points = data_puntos['data'][0]['pts']
-
-        else:
-            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada entre 1946-actual.", False]
-    else:
+    params = f"search={jugador}"
+    url_player = f"{endpoint}?{params}"
+    url_player = url_player.replace(' ', '%20')
+    try:
+        conn.request("GET", url_player, headers=headers)
+    except:
         return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada entre 1946-actual.", False]
 
-    if points == -1:
+    response = conn.getresponse()
+    
+    if jugador != "" and temporada != "":
+
+        data = json.loads(response.read().decode())
+        if data["data"]:
+            player_id = data["data"][0]["id"]
+
+            endpoint = f"/api/v1/season_averages?season={temporada}&player_ids[]={player_id}"
+            conn.request("GET", endpoint, headers=headers)
+            response = conn.getresponse()
+            data = json.loads(response.read().decode())
+
+            conn.close()
+
+            if data["data"]:
+                total_points = data["data"][0]["pts"]
+
+        else:
+            conn.close()
+            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada entre 1946-actual.", False]
+    else:
+        return ["Falta por introducir algún parámetro. Recuerda que debes escribir un jugador que perteneciera a la liga en la temporada que selecciones.", False]
+
+    if total_points == -1:
         return [jugador + " no jugó durante la temporada introducida en la NBA. Introduce una temporada en la que " + jugador + " formara parte de la liga.", False]
     else:
-        return ["El jugador " + jugador + " tiene una media de: " + str(points) + " puntos en la temporada del año " + temporada + ".", True]
+        return ["El jugador " + jugador + " tiene una media de: " + str(total_points) + " puntos en la temporada del año " + temporada + ".", True]
+
 
 
 if __name__=="__main__":
