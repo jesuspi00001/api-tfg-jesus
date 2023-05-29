@@ -48,6 +48,9 @@ def buscar_jugador(jugador, temporada):
         if data["data"]:
             player_id = data["data"][0]["id"]
 
+            jugador = data["data"][0]["first_name"] + " " + data["data"][0]["last_name"]
+            equipo = data["data"][0]["team"]["full_name"]
+
             endpoint = f"/api/v1/season_averages?season={temporada}&player_ids[]={player_id}"
             conn.request("GET", endpoint, headers=headers)
             response = conn.getresponse()
@@ -71,7 +74,7 @@ def buscar_jugador(jugador, temporada):
     if total_points == -1:
         return [jugador + " no jugó durante la temporada introducida en la NBA. Introduce una temporada en la que " + jugador + " formara parte de la liga.", False]
     else:
-        return ["El jugador " + jugador + " tiene una media de: " + str(total_points) + " puntos en la temporada del año " + temporada + ".", True]
+        return ["El jugador " + jugador + " tiene una media de: " + str(total_points) + " puntos en la temporada del año " + temporada + " y en su última temporada en la liga jugó en los " + equipo + ".", True]
 
 
 if __name__=="__main__":
