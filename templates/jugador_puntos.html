@@ -50,11 +50,11 @@
     <div class="container-fluid mt-5 col-8 col-md-4">
         <form method="POST" action="{{ url_for('jugador_puntos') }}">
             <div class="mb-3">
-                <label for="jugador" class="form-label">Nombre del jugador</label>
+                <label for="jugador" class="form-label"><strong>Nombre del jugador</strong></label>
                 <input type="text" class="form-control" id="jugador" name="jugador">
             </div>
             <div class="mb-3">
-                <label for="temporada" class="form-label">Número de temporada (año)</label>
+                <label for="temporada" class="form-label"><strong>Número de temporada (año)</strong></label>
                 <input type="text" class="form-control" id="temporada" name="temporada">
             </div>
             <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -76,7 +76,7 @@
                 <h4>Resultado de la búsqueda</h4>
             </div>
             <div class="card-body">
-                <h5 class="card-title">Puntos durante la temporada</h5>
+                <h5 class="card-title">Media de puntos obtenida en la temporada por el jugador</h5>
                 <h6 class="card-text">{{ resultado }}</h6>
                 <!-- <a href="#" class="btn btn-primary">Descargar</a> -->
             </div>

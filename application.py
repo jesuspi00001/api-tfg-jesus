@@ -38,7 +38,7 @@ def buscar_jugador(jugador, temporada):
     try:
         conn.request("GET", url_player, headers=headers)
     except:
-        return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada entre 1946-actual.", False]
+        return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False]
 
     response = conn.getresponse()
     
@@ -60,14 +60,17 @@ def buscar_jugador(jugador, temporada):
 
         else:
             conn.close()
-            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada entre 1946-actual.", False]
+            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False]
     else:
         return ["Falta por introducir algún parámetro. Recuerda que debes escribir un jugador que perteneciera a la liga en la temporada que selecciones.", False]
 
     if total_points == -1:
         return [jugador + " no jugó durante la temporada introducida en la NBA. Introduce una temporada en la que " + jugador + " formara parte de la liga.", False]
     else:
-        return ["El jugador " + jugador + " tiene una media de: " + str(total_points) + " puntos en la temporada del año " + temporada + ".", True]
+        if type(temporada) == int:
+            return ["El jugador " + jugador + " tiene una media de: " + str(total_points) + " puntos en la temporada " + temporada-1 + "/" + temporada + ".", True]
+        else: 
+            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False]
 
 
 
