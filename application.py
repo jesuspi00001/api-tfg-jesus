@@ -74,6 +74,5 @@ def buscar_jugador(jugador, temporada):
         return ["El jugador " + jugador + " tiene una media de: " + str(total_points) + " puntos en la temporada del año " + temporada + ".", True]
 
 
-
 if __name__=="__main__":
     application.run()
