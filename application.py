@@ -38,7 +38,7 @@ def buscar_jugador(jugador, temporada):
     try:
         conn.request("GET", url_player, headers=headers)
     except:
-        return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada entre 1946-actual.", False]
+        return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False]
 
     response = conn.getresponse()
     
@@ -51,7 +51,11 @@ def buscar_jugador(jugador, temporada):
             endpoint = f"/api/v1/season_averages?season={temporada}&player_ids[]={player_id}"
             conn.request("GET", endpoint, headers=headers)
             response = conn.getresponse()
-            data = json.loads(response.read().decode())
+            try:
+                data = json.loads(response.read().decode())
+            except:
+                return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False]
+
 
             conn.close()
 
@@ -60,7 +64,7 @@ def buscar_jugador(jugador, temporada):
 
         else:
             conn.close()
-            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada entre 1946-actual.", False]
+            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False]
     else:
         return ["Falta por introducir algún parámetro. Recuerda que debes escribir un jugador que perteneciera a la liga en la temporada que selecciones.", False]
 
