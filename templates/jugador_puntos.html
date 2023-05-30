@@ -76,7 +76,11 @@
                 <h4>Resultado de la búsqueda</h4>
             </div>
             <div class="card-body">
-                <h5 class="card-title">Media de puntos obtenida en la temporada por el jugador</h5>
+                {% if flag == False %}
+                <h5 class="card-title">Estadística no encontrada</h5>
+                {% else %}
+                <h5 class="card-title">{{ total_points }}</h5>
+                {% endif %}
                 <h6 class="card-text">{{ resultado }}</h6>
                 <!-- <a href="#" class="btn btn-primary">Descargar</a> -->
             </div>

@@ -16,7 +16,7 @@ def jugador_puntos():
         jugador = request.form['jugador']
         temporada = request.form['temporada']
         resultado = buscar_jugador(jugador, temporada)
-        return render_template('jugador_puntos.html', resultado=resultado[0], flag=resultado[1])
+        return render_template('jugador_puntos.html', resultado=resultado[0], flag=resultado[1], total_points=resultado[2])
     
     return render_template('jugador_puntos.html')
 
@@ -38,7 +38,7 @@ def buscar_jugador(jugador, temporada):
     try:
         conn.request("GET", url_player, headers=headers)
     except:
-        return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False]
+        return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False, str(total_points)]
 
     response = conn.getresponse()
     
@@ -57,7 +57,7 @@ def buscar_jugador(jugador, temporada):
             try:
                 data = json.loads(response.read().decode())
             except:
-                return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False]
+                return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False, str(total_points)]
 
 
             conn.close()
@@ -67,14 +67,14 @@ def buscar_jugador(jugador, temporada):
 
         else:
             conn.close()
-            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False]
+            return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de jugador válido y una temporada comprendida entre 1946-actual.", False, str(total_points)]
     else:
-        return ["Falta por introducir algún parámetro. Recuerda que debes escribir un jugador que perteneciera a la liga en la temporada que selecciones.", False]
+        return ["Falta por introducir algún parámetro. Recuerda que debes escribir un jugador que perteneciera a la liga en la temporada que selecciones.", False, str(total_points)]
 
     if total_points == -1:
-        return [jugador + " no jugó durante la temporada introducida en la NBA. Introduce una temporada en la que " + jugador + " formara parte de la liga.", False]
+        return [jugador + " no jugó durante la temporada introducida en la NBA. Introduce una temporada en la que " + jugador + " formara parte de la liga.", False,str(total_points)]
     else:
-        return ["El jugador " + jugador + " tiene una media de: " + str(total_points) + " puntos en la temporada del año " + temporada + " y en su última temporada en la liga jugó en los " + equipo + ".", True]
+        return ["El jugador " + jugador + " tiene una media de: " + str(total_points) + " puntos en la temporada del año " + temporada + ".", True, str(total_points)]
 
 
 if __name__=="__main__":
