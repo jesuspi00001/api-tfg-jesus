@@ -284,18 +284,21 @@ def obtener_victorias_equipo_temporada(nombre_equipo, temporada):
     except:
         return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de equipo válido y una temporada comprendida entre 1946-actual.", False, str(victorias)]
     
-    if nombre_equipo != "" and temporada != "":
+    try:
+        if nombre_equipo != "" and temporada != "":
 
-        data = json.loads(response.read().decode())
-        for juego in data["data"]:
-            if juego['home_team']['id'] == equipo_id:
-                if juego['home_team_score'] > juego['visitor_team_score']:
-                    victorias += 1
-            elif juego['visitor_team']['id'] == equipo_id:
-                if juego['visitor_team_score'] > juego['home_team_score']:
-                    victorias += 1
-    else:
-        return ["Falta por introducir algún parámetro. Recuerda que debes escribir un equipo que perteneciera a la liga en la temporada que selecciones.", False, str(victorias)]
+            data = json.loads(response.read().decode())
+            for juego in data["data"]:
+                if juego['home_team']['id'] == equipo_id:
+                    if juego['home_team_score'] > juego['visitor_team_score']:
+                        victorias += 1
+                elif juego['visitor_team']['id'] == equipo_id:
+                    if juego['visitor_team_score'] > juego['home_team_score']:
+                        victorias += 1
+        else:
+            return ["Falta por introducir algún parámetro. Recuerda que debes escribir un equipo que perteneciera a la liga en la temporada que selecciones.", False, str(victorias)]
+    except:
+        return ["Alguno de los parámetros introducidos no es correcto. Escribe un nombre de equipo válido y una temporada comprendida entre 1946-actual.", False, str(victorias)]
 
     if victorias == 0:
         return [nombre_equipo + " no pertenecía a la liga en la temporada seleccionada. Introduce una temporada en la que " + nombre_equipo + " fuera uno de los equipos participantes en esta liga.", False,str(victorias)]
