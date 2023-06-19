@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BasketApp</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+</head>
+
+<body>
+    <div class="container-fluid bg-primary">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <a style="font-size: x-large" class="navbar-brand" href="{{ url_for('index') }}">
+                        <h2>BasketApp</h2>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a style="font-size: medium" class="nav-link active" aria-current="page"
+                                    href="{{ url_for('index') }}">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="font-size: medium" class="nav-link active" aria-current="page"
+                                    href="{{ url_for('info_api') }}">Info BBDD</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a style="font-size: medium" class="nav-link active dropdown-toggle" href="#"
+                                    id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Búsquedas
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{ url_for('jugador_puntos') }}">Puntos por
+                                            temporada - Jugador</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('jugador_asistencias') }}">Asistencias
+                                            por temporada - Jugador</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('jugador_rebotes') }}">Rebotes por
+                                            temporada - Jugador</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('victorias_equipo') }}">Victorias en
+                                            una temporada - Equipo</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+
+    <header class="py-4">
+        <div class="container px-lg-5">
+            <div class="p-4 p-lg-2 bg-light rounded-3 text-center">
+                <div class="m-4 m-lg-5">
+                    <h1 class="display-5 fw-bold">API de balldontlie</h1>
+                    <p class="fs-4">La API de balldontlie permite obtener datos relativos a la NBA. Proporciona
+                        información detallada sobre jugadores, equipos, estadísticas de partidos, clasificaciones y
+                        mucho más. Con una documentación bien estructurada y un pool de datos perfectamente validados y
+                        actualizandos, se convierte en una buena alternativa para aplicaciones de este tipo.</p>
+                    <a class="btn btn-primary btn-lg" href="https://app.balldontlie.io/" target="_blank">Ir a
+                        Balldontlie</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="pt-3">
+        <div class="container px-lg-5">
+
+            <div class="row gx-lg-5">
+                <div class="col-lg-6 col-xxl-4 mb-5">
+                    <div class="card bg-light border-0 h-100">
+                        <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i
+                                    class="bi bi-collection"></i></div>
+                            <h2 class="fs-4 fw-bold">API gratuita</h2>
+                            <p class="mb-0">A diferencia de otras APIs existentes sobre la NBA, la API no requiere
+                                suscripción a un plan de pago.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xxl-4 mb-5">
+                    <div class="card bg-light border-0 h-100">
+                        <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i
+                                    class="bi bi-cloud-download"></i></div>
+                            <h2 class="fs-4 fw-bold">Proyecto de código abierto</h2>
+                            <p class="mb-0">Desarrollado por la comunidad, que implementa las nuevas funcionalidades.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xxl-4 mb-5">
+                    <div class="card bg-light border-0 h-100">
+                        <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i
+                                    class="bi bi-card-heading"></i></div>
+                            <h2 class="fs-4 fw-bold">No requiere API key</h2>
+                            <p class="mb-0">No requiere clave API para su uso. Enorme ventaja.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xxl-4 mb-5">
+                    <div class="card bg-light border-0 h-100">
+                        <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i
+                                    class="bi bi-bootstrap"></i></div>
+                            <h2 class="fs-4 fw-bold">Estadísticas actualizadas</h2>
+                            <p class="mb-0"> Contiene datos desde la temporada 1946-actual, actualizados cada ~ 10
+                                minutos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xxl-4 mb-5">
+                    <div class="card bg-light border-0 h-100">
+                        <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i
+                                    class="bi bi-code"></i></div>
+                            <h2 class="fs-4 fw-bold">Limite de solicitudes</h2>
+                            <p class="mb-0">Limitado a 60 peticiones por minuto.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xxl-4 mb-5">
+                    <div class="card bg-light border-0 h-100">
+                        <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i
+                                    class="bi bi-patch-check"></i></div>
+                            <h2 class="fs-4 fw-bold">Endpoints</h2>
+                            <p class="mb-0">Cuenta con multitud de endpoints a los que consultar, con una gran variedad
+                                de información.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
