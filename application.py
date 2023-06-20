@@ -148,7 +148,6 @@ def buscar_jugador_asistencias(jugador, temporada):
             player_id = data["data"][0]["id"]
 
             jugador = data["data"][0]["first_name"] + " " + data["data"][0]["last_name"]
-            equipo = data["data"][0]["team"]["full_name"]
 
             endpoint = f"/api/v1/season_averages?season={temporada}&player_ids[]={player_id}"
             conn.request("GET", endpoint, headers=headers)
@@ -245,7 +244,9 @@ def obtener_id_equipo(nombre_equipo):
 
     conn = http.client.HTTPSConnection(base_url, context=context)
     # Realizar solicitud GET a la API para buscar el equipo por nombre
-    conn.request("GET", f"/api/v1/teams?search={nombre_equipo}")
+    url_equipo = f"/api/v1/teams?search={nombre_equipo}"
+    url_equipo = url_equipo.replace(' ', '%20')
+    conn.request("GET", url_equipo)
     res = conn.getresponse()
     data = res.read().decode("utf-8")
 
